@@ -124,48 +124,49 @@ function App() {
       });
   }
 
-  function CreatePostFunction(e) {
-    e.preventDefault();
-    //For image upload, access to firebase storage
-    const storageRef = firebase.storage().ref(); 
-    const fileReference = e.currentTarget.postImage.files[0];
-    storageRef
-      .child(`${fileReference.name}`)
-      .put(fileReference);
+  // function CreatePostFunction(e) {
+  //   e.preventDefault();
+  //   //For image upload, access to firebase storage
+  //   const storageRef = firebase.storage().ref(); 
+  //   const fileReference = e.currentTarget.postImage.files[0];
+  //   storageRef
+  //     .child(`${fileReference.name}`)
+  //     .put(fileReference);
     
-    let text = e.currentTarget.postText.value;
-    let idFromText = text.replace(/\s+/g, "-").toLowerCase().substr(0, 16);
-    let userID = userInformation.uid;
+  //   let text = e.currentTarget.postText.value;
+  //   let idFromText = text.replace(/\s+/g, "-").toLowerCase().substr(0, 16);
+  //   let userID = userInformation.uid;
 
-    uploadTask.on(
-      'state_changed', 
-      (snapshot) => {}, 
-      (error) => {
-        console.log(error);
-    },
-    () => {
-        // Do something once upload is complete
-        uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-          axios
-          .get(
-              //My API Endpoint
-              //Local:
-              `http://localhost:4000/create?text=${text}&id=${idFromText}&userID=${userID}&image=${downloadURL}`
-              //Production:
-              //`https://myheroku-deployed-api.heroku.com`
-          )
-          .then(function(response){
-              //handle success
-              console.log('response', response);
-          })
-          .catch(function(error){
-              //handle error
-              console.log(error);
-          });
-        })
-    });
-  }
-  }
+  //   uploadTask.on(
+  //     'state_changed', 
+  //     (snapshot) => {}, 
+  //     (error) => {
+  //       console.log(error);
+  //   },
+  //   () => {
+  //       // Do something once upload is complete
+  //       uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+  //         axios
+  //           .get(
+  //               //My API Endpoint
+  //               //Local:
+  //               `http://localhost:4000/create?text=${text}&id=${idFromText}&userID=${userID}&image=${downloadURL}`
+  //               //Production:
+  //               //`https://myheroku-deployed-api.heroku.com`
+  //           )
+  //           .then(function(response){
+  //               //handle success
+  //               console.log('response', response);
+  //           })
+  //           .catch(function(error){
+  //               //handle error
+  //               console.log(error);
+  //           });
+  //       });
+  //     }  
+  //   );
+  // }
+  
 
    //Upload Image
   //  async function UploadImage(e) {
@@ -190,33 +191,33 @@ function App() {
   //}
 
   //Create Post 
-  // async function CreatePostFunction(e) {
-  //   e.preventDefault();
-  //   let text = e.currentTarget.postText.value;
-  //   let idFromText = text.replace(/\s+/g, "-").toLowerCase().substr(0, 16);
-  //   let userID = userInformation.uid;
+  function CreatePostFunction(e) {
+    e.preventDefault();
+    let text = e.currentTarget.postText.value;
+    let idFromText = text.replace(/\s+/g, "-").toLowerCase().substr(0, 16);
+    let userID = userInformation.uid;
 
-  //   const imageReference = await UploadImage(e);
-  //   console.log("imageReference", imageReference);
+    // const imageReference = await UploadImage(e);
+    // console.log("imageReference", imageReference);
 
     //Send the data to API
-    // axios
-    // .get(
-    //     //My API Endpoint
-    //     //Local:
-    //     `http://localhost:4000/create?text=${text}&id=${idFromText}&userID=${userID}`
-    //     //Production:
-    //     //`https://myheroku-deployed-api.heroku.com`
-    // )
-    // .then(function(response){
-    //     //handle success
-    //     console.log('response', response);
-    // })
-    // .catch(function(error){
-    //     //handle error
-    //     console.log(error);
-    // });
-  //}
+    axios
+    .get(
+        //My API Endpoint
+        //Local:
+        `http://localhost:4000/create?text=${text}&id=${idFromText}&userID=${userID}`
+        //Production:
+        //`https://myheroku-deployed-api.heroku.com`
+    )
+    .then(function(response){
+        //handle success
+        console.log('response', response);
+    })
+    .catch(function(error){
+        //handle error
+        console.log(error);
+    });
+  }
 
  
 
@@ -244,7 +245,7 @@ function App() {
           {!loggedIn ? (
             <Redirect to="/login" />
           ) : (
-            <CreatePost CreatePostFunction={CreatePostFunction} UploadImage={UploadImage}/>
+            <CreatePost CreatePostFunction={CreatePostFunction} />
           )} 
           {/* passed in a function as a prop, from function above */}
         </Route>

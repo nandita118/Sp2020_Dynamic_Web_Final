@@ -26,17 +26,20 @@ function Home({userInformation}) {
                     //handle error
                     console.log(error);
                 });
-        // }
     }, []);
 
     return (
         <div className="Wrapper">
         <h1>Welcome, {email} </h1>
-        <div className="">
-            <h2>All Posts</h2>
+        <h2>All Posts</h2>
+        <div className="AllPosts Header__Nav">
             {/*DISPLAY ALL POSTS HERE */}
             {allPosts.map((post, i) => (
-                <p key={i}><a href={`/post/${post.id}`}>{post.text}</a></p>
+                <p key={i}>
+                    <a href={`/post/${post.id}`}>
+                        {post.text}
+                    </a>
+                </p>
             ))}
         </div>
     </div>

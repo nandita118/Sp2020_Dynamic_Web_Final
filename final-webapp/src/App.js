@@ -3,6 +3,7 @@ import { Route, BrowserRouter as Router, Redirect } from "react-router-dom";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 //Pages
+import Header from "./components/Header";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import CreateAccount from "./pages/CreateAccount";
@@ -112,11 +113,18 @@ function App() {
       });
   }
 
+  if (loading) return null;
+
   return (
     <div className="App">
+      <Header LogoutFunction={LogoutFunction} isLoggedIn={loggedIn}/>
       <Router>
         <Route exact path="/">
-          <Home />
+        {!loggedIn ? (
+            <Redirect to="/login"/>
+          ) : (
+            <Home userInformation={userInformation}/>
+          )}
         </Route>
         <Route exact path="/login">
           {!loggedIn ? (

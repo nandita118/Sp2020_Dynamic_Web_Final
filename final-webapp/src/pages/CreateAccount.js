@@ -10,7 +10,7 @@ function CreateAccount({ CreateAccountFunction }) {
                 <CreateAccountForm  CreateAccountFunction={CreateAccountFunction}/>
                 <div className="CreateInformation">
                     <h2>About Convey</h2>
-                    <p>Lorem ipsum ...</p>
+                    <p>This social media site is meant to be a place to share your one-second-a-day videos :) Get creative!</p>
                 </div>
             </div>
         </div>

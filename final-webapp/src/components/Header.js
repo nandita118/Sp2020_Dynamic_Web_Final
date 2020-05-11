@@ -4,7 +4,9 @@ function Header({LogoutFunction, isLoggedIn}) {
     return (
         <header className="Header">
             <div className="Header__Wrapper">
-                <div className="Header__Logo">Logo</div>
+                <div className="Header__Logo">
+                    <img src="convey_logo.PNG" alt="logo"></img>
+                </div>
                 <nav className="Header__Nav">
                     {isLoggedIn && <a href="/">Profile</a>}
                     {isLoggedIn && <a href="/create-post">Create Post</a>}

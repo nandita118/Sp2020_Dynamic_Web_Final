@@ -10,7 +10,7 @@ function CreatePost({ CreatePostFunction, UploadImage }) {
                 <CreatePostForm  CreateAccountFunction={CreatePostFunction}/>
                 <div className="CreateInformation">
                     <h2>Create a Post</h2>
-                    <p>Lorem ipsum ...</p>
+                    <p>Create a post to update users on your extraordinary life!</p>
                 </div>
             </div>
         </div>

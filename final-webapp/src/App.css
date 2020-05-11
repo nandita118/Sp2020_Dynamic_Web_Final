@@ -30,6 +30,11 @@
     text-decoration: none;
 }
 
+.Header__Nav a:hover {
+    color: blue;
+    font-size: medium;
+}
+
 .Header__Nav a:last-of-type {
     margin-right: 0;
     padding-right: 0;
@@ -104,4 +109,12 @@
 .AllPosts a:hover {
     color: blue;
     font-size: x-large;
+}
+
+.Header__Logo {
+    max-width: 5px;
+}
+
+.Header__Logo img {
+    width: 100%;
 }

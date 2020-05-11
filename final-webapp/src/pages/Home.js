@@ -33,9 +33,10 @@ function Home({userInformation}) {
         <div className="Wrapper">
         <h1>Welcome, {email} </h1>
         <div className="">
+            <h2>All Posts</h2>
             {/*DISPLAY ALL POSTS HERE */}
             {allPosts.map((post, i) => (
-                <p key={i}>{post.text}</p>
+                <p key={i}><a href={`/post/${post.id}`}>{post.text}</a></p>
             ))}
         </div>
     </div>

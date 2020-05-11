@@ -80,3 +80,13 @@
     margin: 0;
     max-width: 500px;
 }
+
+.SinglePost {
+    max-width: 550px;
+    padding-top: 60px;
+    text-align: center;
+}
+
+.SinglePost img {
+    width: 100%;
+}

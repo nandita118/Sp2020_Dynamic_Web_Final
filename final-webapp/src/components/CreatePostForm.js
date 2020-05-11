@@ -1,12 +1,14 @@
 import React from 'react';
 
-function CreatePostForm({createPostFunction}) {
+function CreatePostForm({CreatePostFunction}) {
     return (
         <div>
-            <form className="Form CreatePostForm" onSubmit={(e) => createPostFunction(e)}>
-                <label htmlFor="loginPassword">Password</label>
-                <input type="password" name="loginPassword" />
-                <button>Log In Button</button>
+            <form className="Form CreatePostForm" onSubmit={(e) => CreatePostFunction(e)}>
+                <label htmlFor="postText">Text</label>
+                <input type="text" name="postText" />
+                <label htmlFor="postImage">Image</label>
+                <input type="file" name="postImage" accept="image/*"/>
+                <button>Submit</button>
             </form>
         </div>
     );

@@ -1,20 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Route, BrowserRouter as Router, Redirect } from "react-router-dom";
+import axios from "axios";
 import * as firebase from "firebase/app";
 import "firebase/auth";
+import "firebase/storage";
 //Pages
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import CreateAccount from "./pages/CreateAccount";
+import SinglePost from "./pages/SinglePost";
+import CreatePost from "./pages/CreatePost";
 //Styling
 import './App.css';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [userInformation, setUserInformation] = useState({})
+  const [userInformation, setUserInformation] = useState({});
+  //const [storageRef,setStorageRef] = useState(null);
 
+  //Config
   const firebaseConfig = {
     apiKey: "AIzaSyDFkPF84J_bPKYKlC-sA25QLg_Gk06udEs",
     authDomain: "final-project-sp2020-647fc.firebaseapp.com",
@@ -41,6 +47,11 @@ function App() {
       .catch(function(e) {
         console.log("INSTANTIATING AUTH ERROR", e);
       });
+
+    //For image upload, access to firebase storage
+    // const storageService = firebase.storage();
+    // const storageRef = storageService.ref();
+    // setStorageRef(storageRef);
   }, [firebaseConfig]);
 
   //Check to see if the User is loggen in 
@@ -113,6 +124,102 @@ function App() {
       });
   }
 
+  function CreatePostFunction(e) {
+    e.preventDefault();
+    //For image upload, access to firebase storage
+    const storageRef = firebase.storage().ref(); 
+    const fileReference = e.currentTarget.postImage.files[0];
+    storageRef
+      .child(`${fileReference.name}`)
+      .put(fileReference);
+    
+    let text = e.currentTarget.postText.value;
+    let idFromText = text.replace(/\s+/g, "-").toLowerCase().substr(0, 16);
+    let userID = userInformation.uid;
+
+    uploadTask.on(
+      'state_changed', 
+      (snapshot) => {}, 
+      (error) => {
+        console.log(error);
+    },
+    () => {
+        // Do something once upload is complete
+        uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+          axios
+          .get(
+              //My API Endpoint
+              //Local:
+              `http://localhost:4000/create?text=${text}&id=${idFromText}&userID=${userID}&image=${downloadURL}`
+              //Production:
+              //`https://myheroku-deployed-api.heroku.com`
+          )
+          .then(function(response){
+              //handle success
+              console.log('response', response);
+          })
+          .catch(function(error){
+              //handle error
+              console.log(error);
+          });
+        })
+    });
+  }
+  }
+
+   //Upload Image
+  //  async function UploadImage(e) {
+  //   const storageRef = firebase.storage().ref(); 
+  //   const fileReference = e.currentTarget.postImage.files[0];
+  //   storageRef
+  //     .child(`${fileReference.name}`)
+  //     .put(fileReference);
+
+  //     uploadTask.on('state_changed', (snapshot) => {
+  //       // Observe state change events such as progress, pause, and resume
+  //       }, (error) => {
+  //         // Handle unsuccessful uploads
+  //         console.log(error);
+  //       }, () => {
+  //          // Do something once upload is complete
+  //          console.log('success');
+  //       });
+  //     }
+
+    //console.log('upload image', e);
+  //}
+
+  //Create Post 
+  // async function CreatePostFunction(e) {
+  //   e.preventDefault();
+  //   let text = e.currentTarget.postText.value;
+  //   let idFromText = text.replace(/\s+/g, "-").toLowerCase().substr(0, 16);
+  //   let userID = userInformation.uid;
+
+  //   const imageReference = await UploadImage(e);
+  //   console.log("imageReference", imageReference);
+
+    //Send the data to API
+    // axios
+    // .get(
+    //     //My API Endpoint
+    //     //Local:
+    //     `http://localhost:4000/create?text=${text}&id=${idFromText}&userID=${userID}`
+    //     //Production:
+    //     //`https://myheroku-deployed-api.heroku.com`
+    // )
+    // .then(function(response){
+    //     //handle success
+    //     console.log('response', response);
+    // })
+    // .catch(function(error){
+    //     //handle error
+    //     console.log(error);
+    // });
+  //}
+
+ 
+
   if (loading) return null;
 
   return (
@@ -123,8 +230,23 @@ function App() {
         {!loggedIn ? (
             <Redirect to="/login"/>
           ) : (
-            <Home userInformation={userInformation}/>
+            <Home userInformation={userInformation} />
           )}
+        </Route>
+        <Route exact path="/post/:id">
+        {!loggedIn ? (
+            <Redirect to="/login"/>
+          ) : (
+            <SinglePost />
+          )}
+        </Route>
+        <Route exact path="/create-post">
+          {!loggedIn ? (
+            <Redirect to="/login" />
+          ) : (
+            <CreatePost CreatePostFunction={CreatePostFunction} UploadImage={UploadImage}/>
+          )} 
+          {/* passed in a function as a prop, from function above */}
         </Route>
         <Route exact path="/login">
           {!loggedIn ? (
